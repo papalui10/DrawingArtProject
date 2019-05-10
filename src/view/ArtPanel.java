@@ -63,7 +63,25 @@ public class ArtPanel extends JPanel
 	
 	public void saveImage()
 	{
-		
+		try
+		{
+			JFileChooser saveDialog = new JFileChooser();
+			saveDialog.showSaveDialog(this);
+			String savePath = saveDialog.getSelectedFile().getPath();
+			if (!savePath.endsWith(".png"))
+			{
+				savePath += ".png"
+			}
+			ImageIO.write(currentCanvas, "PNG", new File(savePath));
+		}
+		catch (IOException error)
+		{
+			app.handleErrors(error);
+		}
+		catch (NullPointerException badChoise)
+		{
+			app.handleErrors(badChoice);
+		}
 	}
 	
 	private void setupPanel()
