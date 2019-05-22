@@ -10,7 +10,7 @@ public class ArtController
 	
 	public ArtController()
 	{
-		appFrame = new DrawingFrame();
+		appFrame = new DrawingFrame(this);
 	}
 	
 

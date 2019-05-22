@@ -1,147 +1,112 @@
 package view;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Hashtable;
-import javax.swing.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+
+import javax.swing.JPanel;
 
 import controller.ArtController;
 
 public class DrawingAppPanel extends JPanel
 {
 	private ArtController app;
-	private ArtPanel canvas;
-	private JPanel colorPanel;
-	private JPanel menuPanel;
-	private JScrollPane canvasPane;
-	private SpringLayout appLayout;
+	private Color currentColor;
+	private BufferedImage currentCanvas;
+	
 
 
 	public DrawingAppPanel(ArtController app)
 	{
 		super();
-		
-		setupSlider();
-		setupScrollPane();
+		this.app = app;
+		this.currentCanvas = new BufferedImage(700, 700, BufferedImage.TYPE_INT_ARGB);
 		setupPanel();
-		setupLayout();
-		setupListeners();
+		//resetPoint();
 	}
 	
-	private void setupSlider()
+
+	private void clearImage()
 	{
-		Hashtable<Integer, JLabel> scaleLabels = new Hashtable<Integer, JLabel>();
-		scaleLabels.put(MINIMUM_LINE, new JLabel("<HTML>Small<BR>Line</HTML>"));
-		scaleLabels.put(MAXIMUM_LINE, new JLabel("<HTML>Large<BR>Line</HTML>"));
-		widthSlider.setLabelTable(scaleLabels);
-		widthSlider.setSnapToTicks(true);
-		widthSlider.setMajorTickSpacing(5);
-		widthSlider.setMinorTickSpacing(1);
-		widthSlider.setPaintTicks(true);
-		widthSlider.setPaintLabels(true);
-		widthSlider.setValue((MAXIMUM_LINE + MINIMUM_LINE) / 2);
+
 	}
 	
-	private void setupMenuPanels()
+	public void drawLine(int currentX, int currentY, int width)
 	{
-		colorPanel.setPreferredSize(new Dimension(50, 700));
-		menuPanel.setPreferredSize(new Dimension(50, 700));
-		
-		purpleButton.setForeground(new Color(75, 0, 130));
-		blueButton.setForeground(Color.BLUE);
-		greenButton.setForeground(Color.GREEN);
-		orangeButton.setForeground(Color.ORANGE);
-		redButton.setForeground(Color.RED);
-		yellowButton.setForeground(Color.YELLOW);
-		
-		colorPanel.add(blackButton);
-		colorPanel.add(purpleButton);
-		colorPanel.add(blueButton);
-		colorPanel.add(greenButton);
-		colorPanel.add(yellowButton);
-		colorPanel.add(orangeButton);
-		colorPanel.add(redButon);
-		colorPanel.add(whiteButton);
-		colorPanel.add(randomColorButton);
-		
-		menuPanel.add(widthSlider);
-		menuPanel.add(loadButton);
-		menuPanel.add(saveButton);
-		menuPanel.add(clearButton);
-		
+
 	}
 	
-	private void setupScrollPane()
-	{
-		canvasPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		canvasPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		canvasPane.setViewportView(canvas);
-	}
 	
-	private void setupLayout()
-	{
-		appLayout.putConstraint(SpringLayout.NORTH, colorPanel, 0, SpringLayout.NORTH, canvasPane);
-		appLayout.putConstraint(SpringLayout.SOUTH, colorPanel, 0, SpringLayout.SOUTH, canvasPane);
-		appLayout.putConstraint(SpringLayout.WEST, colorPanel, 50, SpringLayout.EAST, canvasPane);
-		appLayout.putConstraint(SpringLayout.WEST, colorPanel, 0, SpringLayout.WEST, menuPanel);
-		
-		appLayout.putConstraint(SpringLayout.WEST, menuPanel, 200, SpringLayout.EAST, canvasPane);
-		appLayout.putConstraint(SpringLayout.SOUTH, menuPanel, 0, SpringLayout.SOUTH, canvasPane);
-		appLayout.putConstraint(SpringLayout.SOUTH, menuPanel, -50, SpringLayout.EAST, this);
-		appLayout.putConstraint(SpringLayout.NORTH, menuPanel, 0, SpringLayout.NORTH, canvasPane);
-		
-		appLayout.putConstraint(SpringLayout.NORTH, canvasPane, 25, SpringLayout.NORTH, this);
-		appLayout.putConstraint(SpringLayout.WEST, canvasPane, 50, SpringLayout.WEST, this);
-		appLayout.putConstraint(SpringLayout.SOUTH, canvasPane, -50, SpringLayout.SOUTH, this);
-	}
 	
-	private void setupListeners()
+	/**
+	public void saveImage()
 	{
-		canvas.addMouseListener(new MouseListener()
+		try
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				canvas.drawDot(e.getX(), e.getY(), widthSlider.getValue());
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e)
-			{
-				canvas.resetPoint();
-			}
-			
-			@Override
-			public void mouseReleased(MouseEvent e)
-			{
-				canvas.resetPoint();
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e)
-			{
-				canvas.resetPoint();
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e)
-			{
-				canvas.resetPoint();
-			}
-		});
-		
-		canvas.addMouseMotionListner(new MouseMotionListener()
-			{
-				public void mouseDragged(MouseEvent e)
-				{
-					
-				}
-				
-				public void mouseMoved(MouseEvent e)
-				{
-					
-				}
-		
-			});
+			JFileChooser saveDialog = new JFileChoose();
+			saveDialog.showSaveDialog(this);
+			String savePath = saveDialog.getSelectedFile().getPath();
+			if(!savePath)
+		}
+	}
+**/
+	public void setupPanel()
+	{
+		this.setPreferredSize(new Dimension(700, 700));
+		this.setBackground(Color.MAGENTA);
+		this.currentColor = Color.GREEN;
+	}
+
+	public void setCurrentColor(String color)
+	{
+		if(color.equalsIgnoreCase("red"))
+		{
+			currentColor = Color.RED;
+		}
+		else if(color.equals("orange"))
+		{
+			currentColor = Color.ORANGE;
+		}
+		else if(color.equals("yellow"))
+		{
+			currentColor = Color.YELLOW;
+		}
+		else if(color.equals("green"))
+		{
+			currentColor = Color.GREEN;
+		}
+		else if(color.equals("blue"))
+		{
+			currentColor = Color.BLUE;
+		}
+		else if(color.equals("violet"))
+		{
+			currentColor = new Color(75, 0, 130);
+		}
+		else
+		{
+			currentColor = randomColor();
+		}
+	}
+
+	private Color randomColor()
+	{
+		int red = (int)(Math.random() * 256);
+		int green = (int)(Math.random() * 256);
+		int blue = (int)(Math.random() * 256);
+		int alpha = (int)(Math.random() * 256);
+
+		Color randomColor = new Color(red, green, blue, alpha);
+		return randomColor;
+	}
+
+	@Override
+	protected void paintComponent(Graphics graphics)
+	{
+		super.paintComponent(graphics);
+		graphics.drawImage(currentCanvas, 0, 0, null);
 	}
 }
